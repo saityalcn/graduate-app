@@ -2,17 +2,21 @@ package com.example.mezunapp
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mezunapp.models.Announcement
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -43,7 +47,6 @@ class AddAnnouncementActivity : AppCompatActivity() {
                 myCalendar[Calendar.DAY_OF_MONTH] = day
                 updateLabel()
             }
-
 
         pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
 
@@ -87,11 +90,11 @@ class AddAnnouncementActivity : AppCompatActivity() {
 
         lateinit var imageUrl: Uri
 
-        var title: String = findViewById<EditText>(R.id.editTextAnnouncementText)!!.text.toString()
+        var title: String = findViewById<EditText>(R.id.editTextAnnouncementTitle)!!.text.toString()
         var text: String = findViewById<EditText>(R.id.editTextAnnouncementText)!!.text.toString()
 
 
-        val time= System.currentTimeMillis();
+        val time= System.currentTimeMillis()
         val announcementImageRef = storageRef.child("announcements/" + time.toString())
 
         val uploadTask = announcementImageRef.putFile(selectedPhoto)
@@ -104,12 +107,35 @@ class AddAnnouncementActivity : AppCompatActivity() {
                     imageUrl = Uri.EMPTY
                 }
                 val announcement: Announcement = Announcement(title,text, Timestamp((myCalendar.time.time / 1000), 0),imageUrl, auth.currentUser!!.uid)
-                db.collection("announcements").add(announcement.toMap())
+                db.collection("announcements").add(announcement.toMap()).addOnSuccessListener {
+                    finish()
+                }.addOnFailureListener{
+                    showErrorSnackbar(view,"Duyuru kaydedilirken hata oluştu.")
+                }
             }
         }.addOnFailureListener{
-
+            showErrorSnackbar(view, "Fotoğraf yüklenirken bir hata oluştu.")
         }
+    }
 
+    fun showErrorSnackbar(view: View, message: String){
+        val snack: Snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+        val view = snack.view
+        val params = view.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP
+        view.layoutParams = params
+        view.setBackgroundColor(Color.RED)
+        snack.show()
+    }
+
+    fun showSuccessSnackbar(view: View, message: String){
+        val snack: Snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+        val view = snack.view
+        val params = view.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP
+        view.layoutParams = params
+        view.setBackgroundColor(Color.GREEN)
+        snack.show()
     }
 
 

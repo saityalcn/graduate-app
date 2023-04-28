@@ -30,7 +30,7 @@ class Announcement {
     }
 
     companion object{
-        fun toObject(map: HashMap<String, Any>){
+        fun toObject(map: HashMap<String, Any>): Announcement{
             var an: Announcement = Announcement(
                 map["title"] as String,
                 map["text"] as String,
@@ -38,6 +38,8 @@ class Announcement {
                 map["imageUrl"] as Uri,
                 map["userId"] as String
             )
+
+            return an
         }
     }
 

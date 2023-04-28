@@ -1,14 +1,17 @@
 package com.example.mezunapp.models
 
+import android.net.Uri
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
 
 class Graduate {
     lateinit var name: String
     lateinit var surname: String
-    lateinit var startDate: Timestamp
-    lateinit var graduateDate: Timestamp
+    lateinit var startYear: String
+    lateinit var graduateYear: String
     lateinit var email: String
-    lateinit var profilePhotoName: String
+    lateinit var profilePhotoLink: Uri
     lateinit var mediaNames: MutableList<String>
     lateinit var programName: String
     lateinit var currentJobCountry: String
@@ -18,59 +21,62 @@ class Graduate {
     constructor(
         name: String,
         surname: String,
-        startDate: Timestamp,
-        graduateDate: Timestamp,
+        startYear: String,
+        graduateYear: String,
         email: String,
-        profilePhotoName: String,
+        profilePhotoLink: Uri,
         programName: String,
-        currentJobCountry: String,
+        currentJobCompany: String,
         currentJobCity: String,
-        currentJobCompany: String
+        currentJobCountry: String
     ){
         this.name = name
         this.surname = surname
-        this.startDate = startDate
-        this.graduateDate = graduateDate
+        this.startYear = startYear
+        this.graduateYear = graduateYear
         this.email = email
-        this.profilePhotoName = profilePhotoName
+        this.profilePhotoLink = profilePhotoLink
         this.mediaNames = mutableListOf<String>()
         this.programName = programName
-        this.currentJobCountry = currentJobCountry
-        this.currentJobCity = currentJobCity
         this.currentJobCompany = currentJobCompany
+        this.currentJobCity = currentJobCity
+        this.currentJobCountry = currentJobCountry
     }
 
     fun toMap() : HashMap<String, Any>{
         val map = hashMapOf(
             "name" to name,
             "surname" to surname,
-            "startDate" to startDate,
-            "graduateDate" to graduateDate,
+            "startYear" to startYear,
+            "graduateYear" to graduateYear,
             "email" to email,
-            "profilePhotoName" to profilePhotoName,
+            "profilePhotoLink" to profilePhotoLink,
             "mediaNames" to mediaNames,
             "programName" to programName,
-            "currentJobCountry" to currentJobCountry,
+            "currentJobCompany" to currentJobCompany,
             "currentJobCity" to currentJobCity,
-            "currentJobCompany" to currentJobCompany
+            "currentJobCountry" to currentJobCountry
         )
         return map
     }
 
     companion object{
-        fun toObject(map: HashMap<String, Any>){
+        fun toObject(map: QueryDocumentSnapshot): Graduate{
             var grad: Graduate = Graduate(
                 map["name"] as String,
                 map["surname"] as String,
-                map["startDate"] as Timestamp,
-                map["graduateDate"] as Timestamp,
+                map["startYear"] as String,
+                map["graduateYear"] as String,
                 map["email"] as String,
-                map["profilePhotoName"] as String,
+                Uri.parse(map["profilePhotoLink"] as String) as Uri,
                 map["programName"] as String,
-                map["currentjobCountry"] as String,
+                map["currentJobCompany"] as String,
                 map["currentJobCity"] as String,
-                map["currentJobCompany"] as String
+                map["currentJobCountry"] as String
             )
+
+
+            return grad
         }
     }
 }

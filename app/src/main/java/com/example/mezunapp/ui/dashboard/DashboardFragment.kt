@@ -63,23 +63,8 @@ class DashboardFragment : Fragment() {
 
         announcementsDb.get().addOnSuccessListener {
             for (map in it) {
-                var i = 0
-                while(i<20) {
-                    val an: Graduate = Graduate(
-                        map["name"] as String,
-                        map["surname"] as String,
-                        map["startDate"] as Timestamp,
-                        map["graduateDate"] as Timestamp,
-                        map["email"] as String,
-                        map["profilePhotoName"] as String,
-                        map["programName"] as String,
-                        map["currentjobCountry"] as String,
-                        map["currentJobCity"] as String,
-                        map["currentJobCompany"] as String
-                    )
-                    graduates.add(an)
-                    i++
-                }
+                val an: Graduate = Graduate.toObject(map)
+                graduates.add(an)
             }
             val gradAdapter = GraduateListAdapter(list=graduates)
             gradutesList.adapter = gradAdapter
