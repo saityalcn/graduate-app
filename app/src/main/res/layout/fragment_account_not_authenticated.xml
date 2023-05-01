@@ -5,10 +5,43 @@
     android:layout_height="match_parent"
     tools:context=".AccountFragmentNotAuthenticated">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="Henüz Giriş Yapmadınız"
+            android:textColor="@color/titleTextColor"
+            android:textFontWeight="600"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:paddingBottom="40dp"
+            android:text="Hesabınıza ulaşmak için giriş yapmalısınız. Aşağıdaki butona tıklayarak hesabınıza giriş yapabilirsiniz."
+            android:textColor="@color/textColor" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onLoginButtonClick"
+            android:text="Giriş Yap"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"/>
+
+    </LinearLayout>
 
 </FrameLayout>

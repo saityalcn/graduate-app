@@ -24,7 +24,7 @@
             android:ems="10"
             android:hint="Eposta"
             android:inputType="textEmailAddress"
-            android:paddingTop="30dp" />
+            android:paddingTop="90dp" />
 
 
         <EditText

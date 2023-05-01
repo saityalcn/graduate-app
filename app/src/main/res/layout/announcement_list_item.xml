@@ -23,7 +23,8 @@
             android:id="@+id/textViewAnnouncementTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="TextView"
+            android:padding="10dp"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
