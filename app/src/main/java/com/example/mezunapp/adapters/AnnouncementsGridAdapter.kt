@@ -1,10 +1,12 @@
 package com.example.mezunapp.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.example.mezunapp.ProfileActivity
 import com.example.mezunapp.R
 import com.example.mezunapp.models.Announcement
 import com.squareup.picasso.Picasso
@@ -40,15 +42,12 @@ class AnnouncementsGridAdapter : BaseAdapter{
 
         val currentAnnouncement: Announcement = getItem(i) as Announcement
 
-
-        // val imageViewPoster: ImageView = view.findViewById(R.id.imageViewPoster) as ImageView
         if(currentView != null){
             currentView!!.findViewById<TextView>(R.id.textViewAnnouncementTitle).setText(currentAnnouncement.title)
             val imageView: ImageView = currentView!!.findViewById<ImageView>(R.id.imageView)
             Picasso.get().load(currentAnnouncement.imageUrl).into(imageView);
         }
 
-        // imageViewPoster.setImageResource(mevcutFilm.getPosterId())
 
         return currentView!!
     }

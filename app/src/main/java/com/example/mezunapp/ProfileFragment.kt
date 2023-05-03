@@ -1,13 +1,26 @@
 package com.example.mezunapp
 
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.PictureDrawable
+import android.media.Image
+import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
 import androidx.viewpager.widget.ViewPager
 import com.example.mezunapp.adapters.ProfileTabPagerAdapter
+import com.example.mezunapp.models.Graduate
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,6 +36,8 @@ class ProfileFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var userId: String
+    private var profileEmail: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,19 +51,83 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        if(arguments?.getString("uid") != null)
+            userId = arguments?.getString("uid")!!
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+            // Mail
+            requireView().findViewById<ImageView>(R.id.redirectToMailImage).setOnClickListener{
+                if(profileEmail != "") {
+                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                        data = Uri.parse("mailto:")
+                        putExtra(Intent.EXTRA_EMAIL, arrayOf(profileEmail))
+                        putExtra(Intent.EXTRA_TEXT, "MezunApp üzerinden gönderildi.")
+                    }
+
+                    if (intent.resolveActivity(requireActivity().packageManager) != null) {
+                        startActivity(intent)
+                    }
+                }else{
+                    showErrorSnackbar(it, "Kullanıcının e-postası çekilirken bir hatayla karşılaştık. Daha sonra tekrar deneyiniz.")
+                }
+
+        }
+
         val viewPager: ViewPager = requireView().findViewById(R.id.view_pager)
-        val adapter = ProfileTabPagerAdapter(parentFragmentManager)
-        viewPager.adapter = adapter
+        val textViewName: TextView = requireView().findViewById<TextView>(R.id.textViewGradName)
+        val textViewAddress: TextView = requireView().findViewById<TextView>(R.id.textViewAddress)
+
+        val imageViewProfilePhoto: ImageView = requireView().findViewById<ImageView>(R.id.imageViewProfilePhoto)
+
+        if(::userId.isInitialized){
+            val db = Firebase.firestore
+            db.collection("graduates").document(userId).get().addOnSuccessListener {
+                val grad = Graduate.fromDocumentSnapshot(it)
+                val adapter = ProfileTabPagerAdapter(parentFragmentManager,grad)
+                viewPager.adapter = adapter
+                textViewName.setText(grad.name + " " + grad.surname)
+                textViewAddress.setText(grad.currentJobCity + ", " + grad.currentJobCountry)
+                Picasso.get().load(grad.profilePhotoLink).into(imageViewProfilePhoto)
+                profileEmail = grad.email
+
+                wpMessage("05309463046")
+            }
+        }
 
         val tabLayout: TabLayout = requireView().findViewById(R.id.profileTab)
         tabLayout.setupWithViewPager(viewPager)
     }
+
+    fun wpMessage(phoneNumber: String){
+        // whatsapp
+
+        val redirectToWpImage: ImageView = requireView().findViewById<ImageView>(R.id.redirectToWpImage)
+
+        redirectToWpImage.setOnClickListener{
+            val message = "\nMezunApp üzerinden gönderildi."
+            val whatsappUrl = "https://api.whatsapp.com/send?phone=$phoneNumber&text=${Uri.encode(message)}"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(whatsappUrl)
+            startActivity(intent)
+        }
+    }
+
+    fun showErrorSnackbar(view: View, message: String){
+        val snack: Snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+        val view = snack.view
+        val params = view.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP
+        view.layoutParams = params
+        view.setBackgroundColor(Color.RED)
+        snack.show()
+    }
+
 
     companion object {
         /**

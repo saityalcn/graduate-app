@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import com.example.mezunapp.models.Graduate
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -16,10 +18,11 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ProfileInformationFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ProfileInformationFragment : Fragment() {
+class ProfileInformationFragment(graduate: Graduate) : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var graduate: Graduate = graduate
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,23 +40,30 @@ class ProfileInformationFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_profile_information, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileInformationFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileInformationFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val textViewStartDate: TextView = requireView().findViewById<TextView>(R.id.textViewStartDate)
+        val textViewGradDate: TextView = requireView().findViewById<TextView>(R.id.textViewGradDate)
+        val textViewProgram: TextView = requireView().findViewById<TextView>(R.id.textViewProgram)
+
+        val textViewCompanyName: TextView = requireView().findViewById<TextView>(R.id.textViewCompanyName)
+        val textViewCompanyCity: TextView = requireView().findViewById<TextView>(R.id.textViewCompanyCity)
+        val textViewCompanyCountry: TextView = requireView().findViewById<TextView>(R.id.textViewCompanyCountry)
+
+        val textViewEmail: TextView = requireView().findViewById<TextView>(R.id.textViewEmail)
+        val textViewPhoneNumber: TextView = requireView().findViewById<TextView>(R.id.textViewPhoneNumber)
+
+
+        textViewStartDate.setText(graduate.startYear)
+        textViewGradDate.setText(graduate.graduateYear)
+        textViewProgram.setText(graduate.programName)
+
+        textViewCompanyName.setText(graduate.currentJobCompany)
+        textViewCompanyCity.setText(graduate.currentJobCity)
+        textViewCompanyCountry.setText(graduate.currentJobCountry)
+
+        textViewEmail.setText(graduate.email)
+        textViewPhoneNumber.setText("05053651492")
     }
+
 }

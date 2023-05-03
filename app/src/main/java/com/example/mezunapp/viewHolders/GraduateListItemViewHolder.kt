@@ -24,7 +24,7 @@ class GraduateListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
 
         itemView.setOnClickListener{
             val intent = Intent(itemView.context, ProfileActivity::class.java)
-            intent.putExtra("selected", graduate.email)
+            intent.putExtra("uid", graduate.uid)
             itemView.context.startActivity(intent)
         }
     }

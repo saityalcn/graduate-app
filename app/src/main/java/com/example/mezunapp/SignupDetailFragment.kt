@@ -127,9 +127,10 @@ class SignupDetailFragment : Fragment() {
             it.storage.downloadUrl.addOnSuccessListener {
                 lateinit var grad: Graduate
                 if (it != null)
-                    grad = Graduate(name, surname, startYear, gradYear, email, it,selectedProgram, currentCompany, currentCompanyCity, currentCompanyCountry)
+                    grad = Graduate(name, surname, startYear, gradYear, email, it,
+                        mutableListOf<String>(), selectedProgram, currentCompany, currentCompanyCity, currentCompanyCountry, auth.currentUser!!.uid)
                 else
-                    grad = Graduate(name, surname, startYear, gradYear, email, Uri.EMPTY,selectedProgram, currentCompany, currentCompanyCity, currentCompanyCountry)
+                    grad = Graduate(name, surname, startYear, gradYear, email, Uri.EMPTY,mutableListOf<String>(), selectedProgram, currentCompany, currentCompanyCity, currentCompanyCountry, auth.currentUser!!.uid)
 
                 db.collection("graduates").document(auth.currentUser!!.uid).set(grad.toMap())
                     .addOnSuccessListener {

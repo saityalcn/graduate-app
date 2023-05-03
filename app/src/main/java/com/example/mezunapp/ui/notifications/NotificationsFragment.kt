@@ -53,8 +53,13 @@ class NotificationsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val auth = Firebase.auth
 
-        if(auth.currentUser != null)
+        if(auth.currentUser != null){
+            val bundle = Bundle()
+            bundle.putString("uid", auth.currentUser!!.uid)
+            profileFragment.arguments = bundle
             replaceFragment(profileFragment)
+        }
+
 
         else
             replaceFragment(nonAuthenticatedFragment)
@@ -75,8 +80,12 @@ class NotificationsFragment : Fragment() {
         super.onResume()
         val auth = Firebase.auth
 
-        if(auth.currentUser != null)
+        if(auth.currentUser != null){
+            val bundle = Bundle()
+            bundle.putString("uid", auth.currentUser!!.uid)
+            profileFragment.arguments = bundle
             replaceFragment(profileFragment)
+        }
 
         else
             replaceFragment(nonAuthenticatedFragment)

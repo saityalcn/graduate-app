@@ -8,11 +8,12 @@ import com.example.mezunapp.AccountFragmentAuthenticated
 import com.example.mezunapp.AccountFragmentNotAuthenticated
 import com.example.mezunapp.GalleryFragment
 import com.example.mezunapp.ProfileInformationFragment
+import com.example.mezunapp.models.Graduate
 
-class ProfileTabPagerAdapter(fragmentManager: FragmentManager) :
+class ProfileTabPagerAdapter(fragmentManager: FragmentManager, grad: Graduate) :
     FragmentStatePagerAdapter(fragmentManager) {
 
-    private val fragments = arrayOf(ProfileInformationFragment(), GalleryFragment())
+    private val fragments = arrayOf(ProfileInformationFragment(grad), GalleryFragment(grad))
 
     override fun getCount(): Int = fragments.size
 

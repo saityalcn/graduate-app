@@ -29,11 +29,12 @@
             android:padding="20dp">
 
             <ImageView
+                android:id="@+id/imageViewProfilePhoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxWidth="60dp"
                 android:adjustViewBounds="true"
-                android:src="@drawable/dum"/>
+                android:src="@drawable/ic_person"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -43,13 +44,14 @@
                 android:paddingLeft="20dp">
 
                 <TextView
+                    android:id="@+id/textViewGradName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sait Yalcin"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/textViewAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Istanbul, Turkiye"/>
@@ -57,11 +59,21 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/redirectToWPImage"
+                android:id="@+id/redirectToMailImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:foregroundGravity="right"
+                android:paddingRight="10dp"
                 android:src="@drawable/ic_email"/>
+
+            <ImageView
+                android:id="@+id/redirectToWpImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxHeight="20dp"
+                android:foregroundGravity="right"
+                android:paddingLeft="10dp"
+                android:src="@drawable/ic_message"/>
 
 
         </LinearLayout>
