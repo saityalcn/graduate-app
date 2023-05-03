@@ -1,5 +1,6 @@
 package com.example.mezunapp.ui.dashboard
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -70,8 +71,7 @@ class DashboardFragment : Fragment() {
 
         searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                // Bu metod, kullanıcı arama butonuna tıkladığında veya klavyeden "enter" tuşuna bastığında çalışır
-                // Arama sorgusu işlemleri burada yapılır
+
                 return true
             }
 
@@ -79,7 +79,7 @@ class DashboardFragment : Fragment() {
                 val newData:MutableList<Graduate> = mutableListOf<Graduate>()
                 if(::gradAdapter.isInitialized) {
                     graduates.forEach {
-                        if (it.name.contains(newText!!)) {
+                        if (it.name.toLowerCase().contains(newText!!.toLowerCase()) || it.surname.toLowerCase().contains(newText!!.toLowerCase())) {
                             newData.add(it)
                         }
                     }
@@ -88,6 +88,7 @@ class DashboardFragment : Fragment() {
                 }
                 return true
             }
+
         })
 
 
@@ -123,12 +124,85 @@ class DashboardFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.filterBtn -> {
+                createFilterPopup()
             }
             else -> {
                 Log.d("ERROR", "Error on onOptionsItemSelected")
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun createFilterPopup(){
+        val builder = AlertDialog.Builder(requireContext())
+        val inflater = LayoutInflater.from(requireContext())
+
+        val dialogView = inflater.inflate(R.layout.dialog_filter, null)
+
+        val minGradYear = dialogView.findViewById<EditText>(R.id.etMinGradYear)
+        val maxGradYear = dialogView.findViewById<EditText>(R.id.etMaxGradYear)
+        val city = dialogView.findViewById<EditText>(R.id.etCity)
+        val country = dialogView.findViewById<EditText>(R.id.etCountry)
+
+        val programs: MutableList<String> = mutableListOf<String>()
+
+        programs.add("")
+        programs.add("Lisans")
+        programs.add("Yüksek Lisans")
+        programs.add("Doktora")
+
+        val spinner = dialogView.findViewById<Spinner>(R.id.programSelectSpinner)
+        if (spinner != null) {
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item, programs
+            )
+            spinner.adapter = adapter
+        }
+
+        builder.apply {
+            setView(dialogView)
+            setPositiveButton("Onayla") { _, _ ->
+                var minGradYearNum = 0
+                var maxGradYearNum = 5000
+
+                if(minGradYear.text.toString() != "")
+                    minGradYearNum = minGradYear.text.toString().toInt()
+
+                if(maxGradYear.text.toString() != "")
+                    maxGradYearNum = maxGradYear.text.toString().toInt()
+
+                val country = country.text.toString()
+                val city = city.text.toString()
+                val program = spinner.selectedItem.toString()
+
+                 filter(minGradYearNum,maxGradYearNum,country,city,program)
+            }
+            setNegativeButton("İptal") { _, _ ->
+            }
+        }
+
+        builder.create().show()
+
+    }
+
+    fun filter(minGradYear: Int,maxGradYear: Int,country: String, city: String, program: String){
+        val newData:MutableList<Graduate> = mutableListOf<Graduate>()
+        var temp: Int = maxGradYear
+
+        if(maxGradYear == 0)
+            temp = 5000
+
+        if(::gradAdapter.isInitialized) {
+            graduates.forEach {
+                if (it.currentJobCity.toLowerCase().contains(city.toLowerCase()) && it.currentJobCountry.toLowerCase().contains(country.toLowerCase())){
+                    if((it.graduateYear.toInt() in (minGradYear + 1) until temp) && (it.programName == program || program == ""))
+                        newData.add(it)
+                }
+            }
+            gradAdapter.setData(newData)
+            gradAdapter.notifyDataSetChanged()
+        }
     }
 
 
