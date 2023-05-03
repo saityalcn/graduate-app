@@ -3,10 +3,7 @@ package com.example.mezunapp.ui.dashboard
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.AdapterView
-import android.widget.GridView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -64,6 +61,11 @@ class DashboardFragment : Fragment() {
         graduates = mutableListOf<Graduate>()
 
 
+        val progressBar = requireView().findViewById<ProgressBar>(R.id.progressBar)
+
+        progressBar.visibility = View.VISIBLE
+        gradutesList.visibility = View.GONE
+
         val searchView = requireView().findViewById<android.widget.SearchView>(R.id.gradSearchView)
 
         searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
@@ -101,6 +103,10 @@ class DashboardFragment : Fragment() {
             gradAdapter = GraduateListAdapter(list=graduates)
             gradutesList.adapter = gradAdapter
             gradutesList.layoutManager = layoutManager
+
+            val progressBar = requireView().findViewById<ProgressBar>(R.id.progressBar)
+            progressBar.visibility = View.GONE
+            gradutesList.visibility = View.VISIBLE
         }.addOnFailureListener{
             Log.d("FAILURE", it.toString())
         }

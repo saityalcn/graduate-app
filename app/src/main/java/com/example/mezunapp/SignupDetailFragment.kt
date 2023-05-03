@@ -16,6 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.example.mezunapp.models.Graduate
 import com.google.android.material.snackbar.Snackbar
+import com.google.api.Distribution.BucketOptions.Linear
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -40,7 +41,8 @@ class SignupDetailFragment : Fragment() {
     lateinit var selectedImage: Uri
     lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
     private val programs: MutableList<String> = mutableListOf<String>()
-
+    private val uid = arguments?.getString("uid")
+    lateinit var graduate: Graduate
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -71,6 +73,7 @@ class SignupDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val imageView: ImageView = requireView().findViewById(R.id.imageViewSelectPhoto)
+        val auth = Firebase.auth
 
         programs.add("Lisans")
         programs.add("Yüksek Lisans")
@@ -83,20 +86,82 @@ class SignupDetailFragment : Fragment() {
                 android.R.layout.simple_spinner_item, programs
             )
             spinner.adapter = adapter
-            imageView.setOnClickListener {
-                Log.v("Signup", "Add Photo")
+        }
+        imageView.setOnClickListener {
+            Log.v("Signup", "Add Photo")
 
-                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            }
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
+
+        requireView().findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
+
+        if(auth.currentUser != null) {
+            initFields()
+            Log.d("INIT", auth.currentUser!!.uid)
         }
 
         requireView().findViewById<Button>(R.id.saveBtn).setOnClickListener{
-            onSaveBtnClick(view)
+            if(auth.currentUser != null)
+                onEditSaveBtnClick(view)
+
+            else
+                onCreateSaveBtnClick(view)
         }
 
     }
 
-    fun onSaveBtnClick(view: View) {
+    fun initFields(){
+        val db = Firebase.firestore
+        val auth = Firebase.auth
+
+        val progressBar = requireView().findViewById<ProgressBar>(R.id.progressBar)
+        val formWrapper = requireView().findViewById<LinearLayout>(R.id.form_wrapper)
+
+
+        progressBar.visibility = View.VISIBLE
+        formWrapper.visibility = View.GONE
+
+        // personal inputs
+        val name = requireView().findViewById<EditText>(R.id.editTextName)
+        val surname = requireView().findViewById<EditText>(R.id.editTextSurname)
+        val phoneNumber = requireView().findViewById<EditText>(R.id.editTextPhoneNumber)
+
+        // education inputs
+        val selectedProgram = requireView().findViewById<Spinner>(R.id.programSelectSpinner)
+        val startYear = requireView().findViewById<EditText>(R.id.editTextStartYear)
+        val gradYear = requireView().findViewById<EditText>(R.id.editTextGradYear)
+
+        // company inputs
+        val currentCompany = requireView().findViewById<EditText>(R.id.editTextCurrentJobCompany)
+        val currentCompanyCity = requireView().findViewById<EditText>(R.id.editTextCurrentJobCity)
+        val currentCompanyCountry = requireView().findViewById<EditText>(R.id.editTextCurrentJobCountry)
+
+        db.collection("graduates").document(auth.currentUser!!.uid).get().addOnSuccessListener {
+            val grad: Graduate = Graduate.fromDocumentSnapshot(it)
+            graduate = grad
+
+            name.setText(grad.name)
+            surname.setText(grad.surname)
+
+            // phoneNumber.setText(grad.phoneNumber)
+
+            selectedProgram.setSelection(programs.indexOf(grad.programName))
+            startYear.setText(grad.startYear)
+            gradYear.setText(grad.graduateYear)
+
+            currentCompany.setText(grad.currentJobCompany)
+            currentCompanyCity.setText(grad.currentJobCity)
+            currentCompanyCountry.setText(grad.currentJobCountry)
+
+            requireView().findViewById<LinearLayout>(R.id.imageSelectView).visibility = View.GONE
+
+            progressBar.visibility = View.GONE
+            formWrapper.visibility = View.VISIBLE
+        }
+
+    }
+
+    fun onCreateSaveBtnClick(view: View) {
         val db = Firebase.firestore
         val auth = Firebase.auth
 
@@ -144,6 +209,54 @@ class SignupDetailFragment : Fragment() {
                 showErrorSnackbar(view, it.localizedMessage)
             }
         }
+    }
+
+    fun onEditSaveBtnClick(view: View){
+        val db = Firebase.firestore
+        val auth = Firebase.auth
+
+        val progressBar = requireView().findViewById<ProgressBar>(R.id.progressBar)
+        val formWrapper = requireView().findViewById<LinearLayout>(R.id.form_wrapper)
+
+        progressBar.visibility = View.VISIBLE
+        formWrapper.visibility = View.GONE
+
+
+        // personal inputs
+        val name: String =
+            requireView().findViewById<EditText>(R.id.editTextName).text.toString()
+        val surname: String =
+            requireView().findViewById<EditText>(R.id.editTextSurname).text.toString()
+        val phoneNumber: String = requireView().findViewById<EditText>(R.id.editTextPhoneNumber).text.toString()
+
+
+        // education inputs
+        val selectedProgramIndex: Int = requireView().findViewById<Spinner>(R.id.programSelectSpinner)!!.selectedItemPosition
+        val selectedProgram: String = programs.get(selectedProgramIndex)
+        val startYear: String = requireView().findViewById<EditText>(R.id.editTextStartYear).text.toString()
+        val gradYear: String =
+            requireView().findViewById<EditText>(R.id.editTextGradYear).text.toString()
+
+        // company inputs
+        val currentCompany: String = requireView().findViewById<EditText>(R.id.editTextCurrentJobCompany).text.toString()
+        val currentCompanyCity: String = requireView().findViewById<EditText>(R.id.editTextCurrentJobCity).text.toString()
+        val currentCompanyCountry: String = requireView().findViewById<EditText>(R.id.editTextCurrentJobCountry).text.toString()
+
+        val docRef = db.collection("graduates").document(auth.currentUser!!.uid)
+
+        lateinit var grad: Graduate
+        grad = Graduate(name, surname, startYear, gradYear, graduate.email, graduate.profilePhotoLink,
+            graduate.mediaNames, selectedProgram, currentCompany, currentCompanyCity, currentCompanyCountry, graduate.uid)
+
+        docRef.update(grad.toMap()).addOnSuccessListener {
+            val intent = Intent(activity, MainActivity::class.java)
+            startActivity(intent)
+        }.addOnFailureListener{
+            progressBar.visibility = View.GONE
+            formWrapper.visibility = View.VISIBLE
+            showErrorSnackbar(requireView(), it.localizedMessage)
+        }
+
     }
 
     fun uploadImage(): UploadTask {

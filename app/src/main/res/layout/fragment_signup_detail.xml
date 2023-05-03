@@ -14,175 +14,188 @@
         android:paddingRight="20dp"
         android:paddingBottom="30dp">
 
-        <TextView
-            android:layout_height="wrap_content"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
             android:layout_width="match_parent"
-            android:paddingBottom="10dp"
-            android:paddingTop="40dp"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:text="Kişisel Bilgiler"/>
-
-
-        <EditText
-            android:id="@+id/editTextName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_person"
-            android:drawablePadding="6dp"
-            android:ems="10"
-            android:hint="Ad"
-            android:inputType="text"
-            android:paddingTop="30dp" />
-
-        <EditText
-            android:id="@+id/editTextSurname"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_person"
-            android:drawablePadding="6dp"
-            android:ems="10"
-            android:hint="Soyad"
-            android:inputType="text"
-            android:paddingTop="30dp" />
-
-
-        <EditText
-            android:id="@+id/editTextPhoneNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_phone"
-            android:drawablePadding="6dp"
-            android:ems="10"
-            android:hint="Telefon Numarası"
-            android:inputType="phone"
-            android:paddingTop="30dp" />
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:paddingBottom="10dp"
-            android:paddingTop="40dp"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:text="Eğitim Bilgileri"/>
-
-        <Spinner
-            android:id="@+id/programSelectSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            android:minHeight="60dp"/>
-
-        <EditText
-            android:id="@+id/editTextStartYear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_calendar"
-            android:drawablePadding="6dp"
-            android:ems="10"
-            android:hint="Başlangıç Yılı"
-            android:inputType="number"
-            android:paddingTop="30dp" />
-
-        <EditText
-            android:id="@+id/editTextGradYear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_calendar"
-            android:drawablePadding="6dp"
-            android:ems="10"
-            android:hint="Mezuniyet Yılı"
-            android:inputType="number"
-            android:paddingTop="30dp" />
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:paddingBottom="10dp"
-            android:paddingTop="40dp"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:text="Şirket Bilgileri"/>
-
-
-        <EditText
-            android:id="@+id/editTextCurrentJobCompany"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_work"
-            android:drawablePadding="6dp"
-            android:ems="10"
-            android:hint="Şirket Adı"
-            android:inputType="text"
-            android:paddingTop="30dp" />
-
-        <EditText
-            android:id="@+id/editTextCurrentJobCity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_map_pin"
-            android:drawablePadding="6dp"
-            android:ems="10"
-            android:hint="Şehir"
-            android:inputType="text"
-            android:paddingTop="30dp" />
-
-        <EditText
-            android:id="@+id/editTextCurrentJobCountry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_flag"
-            android:drawablePadding="6dp"
-            android:ems="10"
-            android:hint="Ülke"
-            android:inputType="text"
-            android:paddingTop="30dp" />
-
+            android:layout_height="wrap_content" />
 
         <LinearLayout
+            android:id="@+id/form_wrapper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="10dp"
-            android:paddingTop="40dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingBottom="10dp"
+                android:paddingTop="40dp"
                 android:textSize="16dp"
                 android:textStyle="bold"
-                android:text="Fotoğraf"/>
+                android:text="Kişisel Bilgiler"/>
 
+
+            <EditText
+                android:id="@+id/editTextName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_person"
+                android:drawablePadding="6dp"
+                android:ems="10"
+                android:hint="Ad"
+                android:inputType="text"
+                android:paddingTop="30dp" />
+
+            <EditText
+                android:id="@+id/editTextSurname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_person"
+                android:drawablePadding="6dp"
+                android:ems="10"
+                android:hint="Soyad"
+                android:inputType="text"
+                android:paddingTop="30dp" />
+
+
+            <EditText
+                android:id="@+id/editTextPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_phone"
+                android:drawablePadding="6dp"
+                android:ems="10"
+                android:hint="Telefon Numarası"
+                android:inputType="phone"
+                android:paddingTop="30dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingBottom="10dp"
+                android:paddingTop="40dp"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:text="Eğitim Bilgileri"/>
+
+            <Spinner
+                android:id="@+id/programSelectSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:minHeight="60dp"/>
+
+            <EditText
+                android:id="@+id/editTextStartYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_calendar"
+                android:drawablePadding="6dp"
+                android:ems="10"
+                android:hint="Başlangıç Yılı"
+                android:inputType="number"
+                android:paddingTop="30dp" />
+
+            <EditText
+                android:id="@+id/editTextGradYear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_calendar"
+                android:drawablePadding="6dp"
+                android:ems="10"
+                android:hint="Mezuniyet Yılı"
+                android:inputType="number"
+                android:paddingTop="30dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingBottom="10dp"
+                android:paddingTop="40dp"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:text="Şirket Bilgileri"/>
+
+
+            <EditText
+                android:id="@+id/editTextCurrentJobCompany"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_work"
+                android:drawablePadding="6dp"
+                android:ems="10"
+                android:hint="Şirket Adı"
+                android:inputType="text"
+                android:paddingTop="30dp" />
+
+            <EditText
+                android:id="@+id/editTextCurrentJobCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_map_pin"
+                android:drawablePadding="6dp"
+                android:ems="10"
+                android:hint="Şehir"
+                android:inputType="text"
+                android:paddingTop="30dp" />
+
+            <EditText
+                android:id="@+id/editTextCurrentJobCountry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_flag"
+                android:drawablePadding="6dp"
+                android:ems="10"
+                android:hint="Ülke"
+                android:inputType="text"
+                android:paddingTop="30dp" />
+
+
+            <LinearLayout
+                android:id="@+id/imageSelectView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp"
+                android:paddingTop="40dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:text="Fotoğraf"/>
+
+
+                <ImageView
+                    android:id="@+id/imageViewSelectPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="60dp"
+                    android:src="@drawable/ic_add_photo" />
+
+
+            </LinearLayout>
 
             <ImageView
-                android:id="@+id/imageViewSelectPhoto"
+                android:id="@+id/imageViewSelectedPhoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="60dp"
-                android:src="@drawable/ic_add_photo" />
+                android:maxHeight="60dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="selectedPhoto" />
 
-
+            <Button
+                android:id="@+id/saveBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Kaydet" />
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageViewSelectedPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxHeight="60dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="selectedPhoto" />
-
-        <Button
-            android:id="@+id/saveBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
-            android:text="Kaydet" />
-
 
     </LinearLayout>
 

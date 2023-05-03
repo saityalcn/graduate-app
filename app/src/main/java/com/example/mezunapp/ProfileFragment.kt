@@ -5,7 +5,9 @@ import android.graphics.Color
 import android.graphics.drawable.PictureDrawable
 import android.media.Image
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,6 +19,7 @@ import com.example.mezunapp.adapters.ProfileTabPagerAdapter
 import com.example.mezunapp.models.Graduate
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -60,9 +63,34 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+            val auth = Firebase.auth
+
+            val mailButton = requireView().findViewById<ImageView>(R.id.redirectToMailImage)
+            val wpButton = requireView().findViewById<ImageView>(R.id.redirectToWpImage)
+            val editButton = requireView().findViewById<ImageView>(R.id.imageViewEdit)
+
+            Log.d("EMAIL", profileEmail)
+            if(auth.currentUser != null){
+                if(userId.equals(auth.currentUser!!.uid)){
+                    mailButton.visibility = View.INVISIBLE
+                    wpButton.visibility = View.INVISIBLE
+
+                    editButton.visibility = View.VISIBLE
+                } else{
+                    mailButton.visibility = View.VISIBLE
+                    wpButton.visibility = View.VISIBLE
+
+                    editButton.visibility = View.GONE
+                }
+            } else{
+                mailButton.visibility = View.VISIBLE
+                wpButton.visibility = View.VISIBLE
+
+                editButton.visibility = View.GONE
+            }
 
             // Mail
-            requireView().findViewById<ImageView>(R.id.redirectToMailImage).setOnClickListener{
+            mailButton.setOnClickListener{
                 if(profileEmail != "") {
                     val intent = Intent(Intent.ACTION_SENDTO).apply {
                         data = Uri.parse("mailto:")
@@ -76,7 +104,11 @@ class ProfileFragment : Fragment() {
                 }else{
                     showErrorSnackbar(it, "Kullanıcının e-postası çekilirken bir hatayla karşılaştık. Daha sonra tekrar deneyiniz.")
                 }
+        }
 
+        editButton.setOnClickListener{
+            val intent = Intent(activity, EditGraduateActivity::class.java)
+            activity?.startActivity(intent)
         }
 
         val viewPager: ViewPager = requireView().findViewById(R.id.view_pager)
