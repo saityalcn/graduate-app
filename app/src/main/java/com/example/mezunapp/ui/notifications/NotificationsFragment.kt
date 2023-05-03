@@ -4,6 +4,7 @@ import android.content.ClipData.Item
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.ProgressBar
 import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -104,9 +105,6 @@ class NotificationsFragment : Fragment() {
             R.id.signOutBtn -> {
                 auth.signOut()
                 replaceFragment(nonAuthenticatedFragment)
-            }
-            R.id.settingsBtn -> {
-                Log.d("Notifi", "Settings")
             }
             else -> {
                 Log.d("ERROR", "Error on onOptionsItemSelected")

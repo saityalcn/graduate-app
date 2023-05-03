@@ -87,6 +87,7 @@ class GalleryFragment(grad:Graduate) : Fragment() {
         }
 
         requireView().findViewById<ImageView>(R.id.uploadPhotoImage).setOnClickListener{
+
             val uploadTask = uploadContent()
             if(uploadTask != null) {
                 uploadTask.addOnSuccessListener {

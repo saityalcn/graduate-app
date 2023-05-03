@@ -42,11 +42,9 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     if(auth.currentUser?.isEmailVerified == true) {
-                        // auth.signOut()
-                        finish()
-                    }
-
-                    else
+                        val intent: Intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                    } else
                         showErrorSnackbar(view, "E-posta doğrulaması yapılmamış. Giriş yapabilmek için lütfen e-posta adresinize gelen link üzerinden doğrulayınız.")
                 } else {
                     showErrorSnackbar(view, "E-Posta veya şifre yanlış tekrar deneyiniz.")

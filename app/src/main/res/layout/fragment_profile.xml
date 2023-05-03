@@ -7,85 +7,92 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ProfileFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:paddingTop="10dp"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
+        android:id="@+id/content_wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="20dp"
         android:orientation="vertical">
 
 
-    <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardElevation="3dp"
-        app:cardCornerRadius="5dp">
-
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="fill_horizontal"
-            android:gravity="center_vertical"
-            android:padding="20dp">
-
-            <ImageView
-                android:id="@+id/imageViewProfilePhoto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxWidth="60dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/ic_person"/>
+            app:cardElevation="3dp"
+            app:cardCornerRadius="5dp">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:paddingLeft="20dp">
+                android:orientation="horizontal"
+                android:layout_gravity="fill_horizontal"
+                android:gravity="center_vertical"
+                android:padding="20dp">
 
-                <TextView
-                    android:id="@+id/textViewGradName"
+                <ImageView
+                    android:id="@+id/imageViewProfilePhoto"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:maxWidth="60dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_person"/>
 
-                <TextView
-                    android:id="@+id/textViewAddress"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:paddingLeft="20dp">
+
+                    <TextView
+                        android:id="@+id/textViewGradName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textViewAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/redirectToMailImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Istanbul, Turkiye"/>
+                    android:foregroundGravity="right"
+                    android:paddingRight="10dp"
+                    android:src="@drawable/ic_email"/>
+
+                <ImageView
+                    android:id="@+id/redirectToWpImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="20dp"
+                    android:foregroundGravity="right"
+                    android:paddingLeft="10dp"
+                    android:src="@drawable/ic_message"/>
+
+                <ImageView
+                    android:id="@+id/imageViewEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:foregroundGravity="right"
+                    android:src="@drawable/ic_edit" />
+
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/redirectToMailImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:foregroundGravity="right"
-                android:paddingRight="10dp"
-                android:src="@drawable/ic_email"/>
-
-            <ImageView
-                android:id="@+id/redirectToWpImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxHeight="20dp"
-                android:foregroundGravity="right"
-                android:paddingLeft="10dp"
-                android:src="@drawable/ic_message"/>
-
-            <ImageView
-                android:id="@+id/imageViewEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:foregroundGravity="right"
-                android:src="@drawable/ic_edit" />
-
-
-        </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
         
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/profileTab"

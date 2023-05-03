@@ -69,7 +69,14 @@ class ProfileFragment : Fragment() {
             val wpButton = requireView().findViewById<ImageView>(R.id.redirectToWpImage)
             val editButton = requireView().findViewById<ImageView>(R.id.imageViewEdit)
 
-            Log.d("EMAIL", profileEmail)
+            val progressBar = requireView().findViewById<ProgressBar>(R.id.progressBar)
+            val contentWrapper = requireView().findViewById<LinearLayout>(R.id.content_wrapper)
+
+            createPopupMenu()
+
+            progressBar.visibility = View.VISIBLE
+            contentWrapper.visibility = View.GONE
+
             if(auth.currentUser != null){
                 if(userId.equals(auth.currentUser!!.uid)){
                     mailButton.visibility = View.INVISIBLE
@@ -106,11 +113,6 @@ class ProfileFragment : Fragment() {
                 }
         }
 
-        editButton.setOnClickListener{
-            val intent = Intent(activity, EditGraduateActivity::class.java)
-            activity?.startActivity(intent)
-        }
-
         val viewPager: ViewPager = requireView().findViewById(R.id.view_pager)
         val textViewName: TextView = requireView().findViewById<TextView>(R.id.textViewGradName)
         val textViewAddress: TextView = requireView().findViewById<TextView>(R.id.textViewAddress)
@@ -128,7 +130,10 @@ class ProfileFragment : Fragment() {
                 Picasso.get().load(grad.profilePhotoLink).into(imageViewProfilePhoto)
                 profileEmail = grad.email
 
-                wpMessage("05309463046")
+                wpMessage("05055055555")
+
+                progressBar.visibility = View.GONE
+                contentWrapper.visibility = View.VISIBLE
             }
         }
 
@@ -148,6 +153,38 @@ class ProfileFragment : Fragment() {
             intent.data = Uri.parse(whatsappUrl)
             startActivity(intent)
         }
+    }
+
+    fun createPopupMenu(){
+        val button = requireView().findViewById<ImageView>(R.id.imageViewEdit)
+        val popupMenu = PopupMenu(requireView().context, button)
+        popupMenu.menuInflater.inflate(R.menu.profile_popup_menu, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.editProfile -> {
+                    startEditActivity()
+                    true
+                }
+                R.id.changePassword -> {
+                    startChangePasswordActivity()
+                    true
+                }
+                else -> false
+            }
+        }
+        button.setOnClickListener {
+            popupMenu.show()
+        }
+    }
+
+    fun startEditActivity(){
+        val intent = Intent(activity, EditGraduateActivity::class.java)
+        activity?.startActivity(intent)
+    }
+
+    fun startChangePasswordActivity(){
+        val intent = Intent(activity, ChangePasswordActivity::class.java)
+        activity?.startActivity(intent)
     }
 
     fun showErrorSnackbar(view: View, message: String){

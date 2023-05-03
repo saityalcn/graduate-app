@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.GridView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -47,9 +48,12 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        val progressBar = requireView().findViewById<ProgressBar>(R.id.progressBar)
         announcementsGrid = requireView().findViewById(R.id.announcements_grid)
         val announcements: MutableList<Announcement> = mutableListOf<Announcement>()
 
+        progressBar.visibility = View.VISIBLE
+        announcementsGrid.visibility = View.GONE
 
         val db = Firebase.firestore
 
@@ -62,6 +66,8 @@ class HomeFragment : Fragment() {
             }
             val announcementsAdapter = AnnouncementsGridAdapter(requireActivity(),list=announcements)
             announcementsGrid.adapter = announcementsAdapter
+            progressBar.visibility = View.GONE
+            announcementsGrid.visibility = View.VISIBLE
         }.addOnFailureListener{
             Log.d("FAILURE", it.toString())
         }

@@ -214,7 +214,7 @@
                     android:id="@+id/textViewPhoneNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="05309463046"/>
+                    android:text=""/>
 
             </LinearLayout>
 
