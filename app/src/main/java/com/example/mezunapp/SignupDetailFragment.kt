@@ -1,9 +1,16 @@
 package com.example.mezunapp
 
+import android.app.Activity.RESULT_OK
+import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -13,6 +20,9 @@ import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.example.mezunapp.models.Graduate
 import com.google.android.material.snackbar.Snackbar
@@ -22,6 +32,8 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
+import java.io.File
+import java.io.FileOutputStream
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -37,6 +49,9 @@ class SignupDetailFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private val CAMERA_REQUEST_CODE = 100
+    private var imageUri: Uri? = null
 
     lateinit var selectedImage: Uri
     lateinit var pickMedia: ActivityResultLauncher<PickVisualMediaRequest>
@@ -72,8 +87,9 @@ class SignupDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val imageView: ImageView = requireView().findViewById(R.id.imageViewSelectPhoto)
-        val auth = Firebase.auth
+       val auth = Firebase.auth
+
+        createPopupMenu()
 
         programs.add("Lisans")
         programs.add("Yüksek Lisans")
@@ -87,27 +103,65 @@ class SignupDetailFragment : Fragment() {
             )
             spinner.adapter = adapter
         }
-        imageView.setOnClickListener {
-            Log.v("Signup", "Add Photo")
 
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        }
 
         requireView().findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
 
-        if(auth.currentUser != null) {
+        if(auth.currentUser != null && auth.currentUser!!.isEmailVerified) {
             initFields()
             Log.d("INIT", auth.currentUser!!.uid)
         }
 
         requireView().findViewById<Button>(R.id.saveBtn).setOnClickListener{
-            if(auth.currentUser != null)
+            if(auth.currentUser != null && auth.currentUser!!.isEmailVerified)
                 onEditSaveBtnClick(view)
 
             else
                 onCreateSaveBtnClick(view)
         }
 
+    }
+
+    fun createPopupMenu(){
+        val button = requireView().findViewById<ImageView>(R.id.imageViewSelectPhoto)
+        val popupMenu = PopupMenu(requireView().context, button)
+        popupMenu.menuInflater.inflate(R.menu.addphoto_popup_menu, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.openCamera -> {
+                    if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED) {
+                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.CAMERA,android.Manifest.permission.WRITE_EXTERNAL_STORAGE), CAMERA_REQUEST_CODE)
+                    } else if(ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                        ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.CAMERA,android.Manifest.permission.WRITE_EXTERNAL_STORAGE), CAMERA_REQUEST_CODE)
+                    }else {
+                        val values = ContentValues()
+                        values.put(MediaStore.Images.Media.TITLE, System.currentTimeMillis())
+                        values.put(MediaStore.Images.Media.DESCRIPTION, "")
+                        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                        imageUri = activity?.contentResolver?.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
+                        startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE)
+                    }
+                    true
+                }
+                R.id.selectGallery -> {
+                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                    true
+                }
+                else -> false
+            }
+        }
+        button.setOnClickListener {
+            popupMenu.show()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == CAMERA_REQUEST_CODE && resultCode == RESULT_OK) {
+            if(imageUri != null)
+                selectedImage = imageUri as Uri
+        }
     }
 
     fun initFields(){

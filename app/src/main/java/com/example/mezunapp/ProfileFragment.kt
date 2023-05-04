@@ -119,18 +119,20 @@ class ProfileFragment : Fragment() {
 
         val imageViewProfilePhoto: ImageView = requireView().findViewById<ImageView>(R.id.imageViewProfilePhoto)
 
-        if(::userId.isInitialized){
+        if(::userId.isInitialized && userId != null){
             val db = Firebase.firestore
             db.collection("graduates").document(userId).get().addOnSuccessListener {
-                val grad = Graduate.fromDocumentSnapshot(it)
-                val adapter = ProfileTabPagerAdapter(parentFragmentManager,grad)
-                viewPager.adapter = adapter
-                textViewName.setText(grad.name + " " + grad.surname)
-                textViewAddress.setText(grad.currentJobCity + ", " + grad.currentJobCountry)
-                Picasso.get().load(grad.profilePhotoLink).into(imageViewProfilePhoto)
-                profileEmail = grad.email
+                if(it != null && it["uid"] != null) {
+                    val grad = Graduate.fromDocumentSnapshot(it)
+                    val adapter = ProfileTabPagerAdapter(parentFragmentManager, grad)
+                    viewPager.adapter = adapter
+                    textViewName.setText(grad.name + " " + grad.surname)
+                    textViewAddress.setText(grad.currentJobCity + ", " + grad.currentJobCountry)
+                    Picasso.get().load(grad.profilePhotoLink).into(imageViewProfilePhoto)
+                    profileEmail = grad.email
 
-                wpMessage("05055055555")
+                    wpMessage("05055055555")
+                }
 
                 progressBar.visibility = View.GONE
                 contentWrapper.visibility = View.VISIBLE
