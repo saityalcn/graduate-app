@@ -19,6 +19,7 @@ import com.example.mezunapp.models.Announcement
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.util.*
 
 class HomeFragment : Fragment() {
 
@@ -47,6 +48,10 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initGrid()
+    }
+
+    fun initGrid(){
 
         val progressBar = requireView().findViewById<ProgressBar>(R.id.progressBar)
         announcementsGrid = requireView().findViewById(R.id.announcements_grid)
@@ -56,6 +61,8 @@ class HomeFragment : Fragment() {
         announcementsGrid.visibility = View.GONE
 
         val db = Firebase.firestore
+
+        checkExpiration()
 
         val announcementsDb = db.collection("announcements")
 
@@ -72,15 +79,33 @@ class HomeFragment : Fragment() {
             Log.d("FAILURE", it.toString())
         }
 
-
-
         announcementsGrid.onItemClickListener = AdapterView.OnItemClickListener{ _, _, position, _ ->
             Toast.makeText(
                 requireActivity(), announcements.get(position).title + " selected",
                 Toast.LENGTH_SHORT
             ).show()
         }
+    }
 
+    private fun checkExpiration(){
+        val db = Firebase.firestore
+        val collectionRef = db.collection("announcements")
+        val today = Date()
+
+        collectionRef.whereLessThan("expireDate", Timestamp(today)).get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    document.reference.delete()
+                }
+            }
+            .addOnFailureListener { exception ->
+                Log.e("ERROR", "Error getting documents: ", exception)
+            }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initGrid()
     }
 
     override fun onDestroyView() {

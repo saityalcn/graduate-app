@@ -15,114 +15,127 @@
         android:paddingBottom="30dp"
         tools:context=".AddAnnouncementActivity">
 
-        <TextView
-            android:id="@+id/textView7"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="30dp"
-            android:paddingBottom="5dp"
-            android:text="Başlık" />
-
-        <EditText
-            android:id="@+id/editTextAnnouncementTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Başlık"
-            android:inputType="text" />
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="30dp"
-            android:paddingBottom="5dp"
-            android:text="Açıklama" />
-
-        <EditText
-            android:id="@+id/editTextAnnouncementText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint=""
-            android:maxLines="6"
-            android:inputType="textMultiLine"/>
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="30dp"
-            android:paddingBottom="5dp"
-            android:text="Duyuru Bitiş Tarihi" />
+            android:layout_height="wrap_content" />
 
         <LinearLayout
+            android:id="@+id/contentWrapper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/editTextDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Tarih"
-                android:inputType="date"/>
-
-
-            <ImageView
-                android:id="@+id/calendarImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_calendar" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:orientation="horizontal"
-            android:paddingTop="30dp"
-            android:paddingBottom="30dp">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:paddingRight="60dp"
-                android:text="Fotoğraf" />
+                android:paddingTop="30dp"
+                android:paddingBottom="5dp"
+                android:text="Başlık" />
+
+            <EditText
+                android:id="@+id/editTextAnnouncementTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Başlık"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="30dp"
+                android:paddingBottom="5dp"
+                android:text="Açıklama" />
+
+            <EditText
+                android:id="@+id/editTextAnnouncementText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint=""
+                android:maxLines="6"
+                android:inputType="textMultiLine"/>
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="30dp"
+                android:paddingBottom="5dp"
+                android:text="Duyuru Bitiş Tarihi" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editTextDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Tarih"
+                    android:inputType="date"/>
 
 
+                <ImageView
+                    android:id="@+id/calendarImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_calendar" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:orientation="horizontal"
+                android:paddingTop="30dp"
+                android:paddingBottom="30dp">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingRight="60dp"
+                    android:text="Fotoğraf" />
+
+
+
+                <ImageView
+                    android:id="@+id/imageViewSelectPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add_photo" />
+
+
+            </LinearLayout>
 
             <ImageView
-                android:id="@+id/imageViewSelectPhoto"
+                android:id="@+id/imageViewSelectedPhoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_add_photo" />
+                android:maxHeight="60dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="selectedPhoto" />
 
+            <Button
+                android:id="@+id/submitBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="Yayınla" />
 
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/imageViewSelectedPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxHeight="60dp"
-            android:adjustViewBounds="true"
-            android:contentDescription="selectedPhoto" />
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
-            android:onClick="saveAnnouncement"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
-            android:text="Yayınla" />
 
     </LinearLayout>
 </ScrollView>

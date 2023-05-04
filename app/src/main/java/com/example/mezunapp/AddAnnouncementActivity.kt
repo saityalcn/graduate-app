@@ -8,15 +8,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.view.View
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.ImageView
+import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mezunapp.models.Announcement
 import com.google.android.material.snackbar.Snackbar
+import com.google.api.Distribution.BucketOptions.Linear
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -36,6 +35,10 @@ class AddAnnouncementActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_announcement)
+
+        findViewById<Button>(R.id.submitBtn).setOnClickListener{
+            saveAnnouncement(it)
+        }
 
         editText = findViewById<EditText>(R.id.editTextDate) as EditText
         editText.isEnabled = false
@@ -75,7 +78,14 @@ class AddAnnouncementActivity : AppCompatActivity() {
 
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
+
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        val contentWrapper = findViewById<LinearLayout>(R.id.contentWrapper)
+
+        progressBar.visibility = View.GONE
+        contentWrapper.visibility = View.VISIBLE
     }
+
 
     private fun updateLabel() {
         val myFormat = "dd/MM/yy"
@@ -87,6 +97,12 @@ class AddAnnouncementActivity : AppCompatActivity() {
         var storageRef = Firebase.storage.reference
         val db = Firebase.firestore
         val auth = Firebase.auth
+
+        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
+        val contentWrapper = findViewById<LinearLayout>(R.id.contentWrapper)
+
+        progressBar.visibility = View.VISIBLE
+        contentWrapper.visibility = View.GONE
 
         lateinit var imageUrl: Uri
 
@@ -110,13 +126,18 @@ class AddAnnouncementActivity : AppCompatActivity() {
                 db.collection("announcements").add(announcement.toMap()).addOnSuccessListener {
                     finish()
                 }.addOnFailureListener{
+                    progressBar.visibility = View.GONE
+                    contentWrapper.visibility = View.VISIBLE
                     showErrorSnackbar(view,"Duyuru kaydedilirken hata oluştu.")
                 }
             }
         }.addOnFailureListener{
+            progressBar.visibility = View.GONE
+            contentWrapper.visibility = View.VISIBLE
             showErrorSnackbar(view, "Fotoğraf yüklenirken bir hata oluştu.")
         }
     }
+
 
     fun showErrorSnackbar(view: View, message: String){
         val snack: Snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
