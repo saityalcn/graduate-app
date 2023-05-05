@@ -9,32 +9,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="Giriş Yap"
-            android:textColor="@color/titleTextColor"
-            android:textFontWeight="600"
-            android:textSize="25sp" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="E-Posta ve şifreni kullanarak giriş yapabilirsin."
-            android:textColor="@color/textColor" />
 
         <LinearLayout
+            android:id="@+id/contentWrapper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingTop="50dp"
-            android:paddingBottom="50dp">
+            android:paddingTop="60dp"
+            android:paddingBottom="60dp">
 
             <EditText
                 android:id="@+id/editTextTextEmailAddress"

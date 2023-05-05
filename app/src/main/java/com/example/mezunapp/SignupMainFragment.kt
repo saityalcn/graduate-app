@@ -47,6 +47,8 @@ class SignupMainFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
+        activity?.title = "Hesap Oluştur"
+
     }
 
     override fun onCreateView(

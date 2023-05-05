@@ -70,7 +70,7 @@ class GalleryGridAdapter: BaseAdapter {
 
                 currentView.setOnClickListener {
                     val intent = Intent(currentView.context, VideoActivity::class.java)
-                    intent.putExtra("mediaUri", currentMediaUri)
+                    intent.putExtra("mediaUrl", currentMediaUri.toString())
                     currentView.context.startActivity(intent)
                 }
 

@@ -121,10 +121,7 @@ class GalleryFragment(grad:Graduate) : Fragment() {
         galleryGrid = requireView().findViewById(R.id.gallery_grid)
         val uriList: MutableList<String> = mutableListOf<String>()
 
-        Log.d("MEDIAAAAAAAAAAaaLENGTHs", graduate.mediaNames.size.toString())
-
         graduate.mediaNames.forEach{
-            Log.d("MEDIAAAAAAAAAAaa", it)
             uriList.add(it)
         }
 

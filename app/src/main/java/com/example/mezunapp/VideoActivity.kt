@@ -3,6 +3,7 @@ package com.example.mezunapp
 import androidx.appcompat.app.AppCompatActivity
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -78,14 +79,18 @@ private lateinit var binding: ActivityVideoBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-     binding = ActivityVideoBinding.inflate(layoutInflater)
-     setContentView(binding.root)
+         binding = ActivityVideoBinding.inflate(layoutInflater)
+         setContentView(binding.root)
+
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         fullscreenContent = findViewById(R.id.content)
 
         isFullscreen = true
+
+        val progressBar = findViewById<LinearLayout>(R.id.videoProgressBar)
+        progressBar.visibility = View.VISIBLE
 
         // Set up the user interaction to manually show or hide the system UI.
 
@@ -97,7 +102,10 @@ private lateinit var binding: ActivityVideoBinding
         binding.dummyButton.setOnTouchListener(delayHideTouchListener)
 
         // set videoView
-        val mediaUrl = "https://firebasestorage.googleapis.com/v0/b/mezun-a.appspot.com/o/video%2F1683106315674?alt=media&token=97c7766f-97dd-491e-96fb-ca3d541bdeec"
+        var mediaUrl = intent.getStringExtra("mediaUrl")
+        if(mediaUrl == null)
+            mediaUrl = ""
+
         val mediaUri: Uri = Uri.parse(mediaUrl)
 
         val imageView = findViewById<ImageView>(R.id.imageView)
@@ -125,11 +133,21 @@ private lateinit var binding: ActivityVideoBinding
         val mediaController = MediaController(this)
         mediaController.setAnchorView(videoView)
 
+        val progressBar = findViewById<LinearLayout>(R.id.videoProgressBar)
+
+
+        videoView.setOnPreparedListener {
+            progressBar.visibility = View.GONE
+        }
+
+
+
         videoView.setMediaController(mediaController)
 
         videoView.setVideoURI(videoUri)
         videoView.requestFocus()
         videoView.start()
+
     }
 
     fun createImageView(imageUri: Uri, imageView: ImageView){

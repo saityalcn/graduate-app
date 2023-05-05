@@ -13,6 +13,8 @@ class ProfileActivity : AppCompatActivity() {
         val uid = intent.extras!!.getString("uid")
 
         changeFragment(ProfileFragment(), uid)
+
+        setTitle("Profil")
     }
 
     fun changeFragment(fragment: Fragment, uid: String?){

@@ -16,6 +16,8 @@ class EditGraduateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_graduate)
         changeFragment(SignupDetailFragment())
+
+        setTitle("Profili Düzenle")
     }
 
     fun showSuccessSnackbar(view: View, message: String){

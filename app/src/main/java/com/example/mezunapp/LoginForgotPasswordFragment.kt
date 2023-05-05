@@ -37,6 +37,12 @@ class LoginForgotPasswordFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_login_forgot_password, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        activity?.title = "Şifremi Unuttum"
+    }
+
     companion object {
         /**
          * Use this factory method to create a new instance of

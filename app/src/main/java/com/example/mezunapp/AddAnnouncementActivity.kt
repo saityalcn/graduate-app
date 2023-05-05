@@ -36,6 +36,8 @@ class AddAnnouncementActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_announcement)
 
+        setTitle("Duyuru Ekle")
+
         findViewById<Button>(R.id.submitBtn).setOnClickListener{
             saveAnnouncement(it)
         }
