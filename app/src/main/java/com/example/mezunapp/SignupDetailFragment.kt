@@ -207,6 +207,8 @@ class SignupDetailFragment : Fragment() {
             currentCompanyCity.setText(grad.currentJobCity)
             currentCompanyCountry.setText(grad.currentJobCountry)
 
+            phoneNumber.setText(grad.phoneNumber)
+
             requireView().findViewById<LinearLayout>(R.id.imageSelectView).visibility = View.GONE
 
             progressBar.visibility = View.GONE
@@ -246,10 +248,10 @@ class SignupDetailFragment : Fragment() {
             it.storage.downloadUrl.addOnSuccessListener {
                 lateinit var grad: Graduate
                 if (it != null)
-                    grad = Graduate(name, surname, startYear, gradYear, email, it,
+                    grad = Graduate(name, surname, startYear, gradYear, email,phoneNumber, it,
                         mutableListOf<String>(), selectedProgram, currentCompany, currentCompanyCity, currentCompanyCountry, auth.currentUser!!.uid)
                 else
-                    grad = Graduate(name, surname, startYear, gradYear, email, Uri.EMPTY,mutableListOf<String>(), selectedProgram, currentCompany, currentCompanyCity, currentCompanyCountry, auth.currentUser!!.uid)
+                    grad = Graduate(name, surname, startYear, gradYear,phoneNumber, email, Uri.EMPTY,mutableListOf<String>(), selectedProgram, currentCompany, currentCompanyCity, currentCompanyCountry, auth.currentUser!!.uid)
 
                 db.collection("graduates").document(auth.currentUser!!.uid).set(grad.toMap())
                     .addOnSuccessListener {
@@ -299,7 +301,7 @@ class SignupDetailFragment : Fragment() {
         val docRef = db.collection("graduates").document(auth.currentUser!!.uid)
 
         lateinit var grad: Graduate
-        grad = Graduate(name, surname, startYear, gradYear, graduate.email, graduate.profilePhotoLink,
+        grad = Graduate(name, surname, startYear, gradYear, graduate.email, phoneNumber, graduate.profilePhotoLink,
             graduate.mediaNames, selectedProgram, currentCompany, currentCompanyCity, currentCompanyCountry, graduate.uid)
 
         docRef.update(grad.toMap()).addOnSuccessListener {

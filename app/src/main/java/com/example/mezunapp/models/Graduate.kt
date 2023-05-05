@@ -12,6 +12,7 @@ class Graduate {
     lateinit var startYear: String
     lateinit var graduateYear: String
     lateinit var email: String
+    lateinit var phoneNumber: String
     lateinit var profilePhotoLink: Uri
     lateinit var mediaNames: MutableList<String>
     lateinit var programName: String
@@ -26,6 +27,7 @@ class Graduate {
         startYear: String,
         graduateYear: String,
         email: String,
+        phoneNumber: String,
         profilePhotoLink: Uri,
         mediaNames: MutableList<String>,
         programName: String,
@@ -39,6 +41,7 @@ class Graduate {
         this.startYear = startYear
         this.graduateYear = graduateYear
         this.email = email
+        this.phoneNumber = phoneNumber
         this.profilePhotoLink = profilePhotoLink
         this.mediaNames = mediaNames
         this.programName = programName
@@ -55,6 +58,7 @@ class Graduate {
             "startYear" to startYear,
             "graduateYear" to graduateYear,
             "email" to email,
+            "phoneNumber" to phoneNumber,
             "profilePhotoLink" to profilePhotoLink,
             "mediaNames" to mediaNames,
             "programName" to programName,
@@ -74,6 +78,7 @@ class Graduate {
                 map["startYear"] as String,
                 map["graduateYear"] as String,
                 map["email"] as String,
+                map["phoneNumber"] as String,
                 Uri.parse(map["profilePhotoLink"] as String) as Uri,
                 map["mediaNames"] as MutableList<String>,
                 map["programName"] as String,
@@ -93,6 +98,7 @@ class Graduate {
                 map["startYear"] as String,
                 map["graduateYear"] as String,
                 map["email"] as String,
+                map["phoneNumber"] as String,
                 Uri.parse(map["profilePhotoLink"] as String) as Uri,
                 map["mediaNames"] as MutableList<String>,
                 map["programName"] as String,

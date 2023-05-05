@@ -63,7 +63,7 @@ class ProfileInformationFragment(graduate: Graduate) : Fragment() {
         textViewCompanyCountry.setText(graduate.currentJobCountry)
 
         textViewEmail.setText(graduate.email)
-        textViewPhoneNumber.setText("05053651492")
+        textViewPhoneNumber.setText(graduate.phoneNumber)
     }
 
 }

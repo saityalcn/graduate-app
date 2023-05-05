@@ -131,7 +131,7 @@ class ProfileFragment : Fragment() {
                     Picasso.get().load(grad.profilePhotoLink).into(imageViewProfilePhoto)
                     profileEmail = grad.email
 
-                    wpMessage("05055055555")
+                    wpMessage(grad.phoneNumber)
                 }
 
                 progressBar.visibility = View.GONE
