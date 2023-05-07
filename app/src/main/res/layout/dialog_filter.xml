@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginRight="10dp"
+            android:inputType="number"
             android:hint="Min"/>
 
         <EditText
@@ -33,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
+            android:inputType="number"
             android:hint="Max"/>
 
     </LinearLayout>

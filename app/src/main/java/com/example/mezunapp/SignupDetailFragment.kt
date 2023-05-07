@@ -107,13 +107,16 @@ class SignupDetailFragment : Fragment() {
 
         requireView().findViewById<ProgressBar>(R.id.progressBar).visibility = View.GONE
 
-        if(auth.currentUser != null && auth.currentUser!!.isEmailVerified) {
-            initFields()
-            Log.d("INIT", auth.currentUser!!.uid)
+        if(auth.currentUser != null) {
+            Firebase.firestore.collection("graduates").document(auth.currentUser!!.uid).get().addOnSuccessListener {
+                if(it["uid"] != null)
+                    initFields()
+            }
+
         }
 
         requireView().findViewById<Button>(R.id.saveBtn).setOnClickListener{
-            if(auth.currentUser != null && auth.currentUser!!.isEmailVerified)
+            if(auth.currentUser != null && ::graduate.isInitialized)
                 onEditSaveBtnClick(view)
 
             else
@@ -300,17 +303,32 @@ class SignupDetailFragment : Fragment() {
 
         val docRef = db.collection("graduates").document(auth.currentUser!!.uid)
 
-        lateinit var grad: Graduate
-        grad = Graduate(name, surname, startYear, gradYear, graduate.email, phoneNumber, graduate.profilePhotoLink,
-            graduate.mediaNames, selectedProgram, currentCompany, currentCompanyCity, currentCompanyCountry, graduate.uid)
+        if(::graduate.isInitialized) {
+            lateinit var grad: Graduate
+            grad = Graduate(
+                name,
+                surname,
+                startYear,
+                gradYear,
+                graduate.email,
+                phoneNumber,
+                graduate.profilePhotoLink,
+                graduate.mediaNames,
+                selectedProgram,
+                currentCompany,
+                currentCompanyCity,
+                currentCompanyCountry,
+                graduate.uid
+            )
 
-        docRef.update(grad.toMap()).addOnSuccessListener {
-            val intent = Intent(activity, MainActivity::class.java)
-            startActivity(intent)
-        }.addOnFailureListener{
-            progressBar.visibility = View.GONE
-            formWrapper.visibility = View.VISIBLE
-            showErrorSnackbar(requireView(), it.localizedMessage)
+            docRef.update(grad.toMap()).addOnSuccessListener {
+                val intent = Intent(activity, MainActivity::class.java)
+                startActivity(intent)
+            }.addOnFailureListener {
+                progressBar.visibility = View.GONE
+                formWrapper.visibility = View.VISIBLE
+                showErrorSnackbar(requireView(), it.localizedMessage)
+            }
         }
 
     }
